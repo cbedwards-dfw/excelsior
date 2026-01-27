@@ -6,7 +6,7 @@
 \alias{excelsior-package}
 \title{excelsior: Streamlines Excel File Automation}
 \description{
-Useful tools for automation of excel file data entry, especially transfering parts of one sheet into a sheet of another file.
+Useful tools for automation of excel file data entry, especially transferring parts of one sheet into a sheet of another file.
 }
 \seealso{
 Useful links:
