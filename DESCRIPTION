@@ -1,13 +1,27 @@
 Package: excelsior
-Title: What the Package Does (One Line, Title Case)
+Title: Streamlines Excel File Automation
 Version: 0.0.0.9000
 Authors@R: 
     person("Collin", "Edwards", , "Collin.Edwards@dfw.wa.gov", role = c("aut", "cre"),
            comment = c(ORCID = "0000-0002-4937-5159"))
-Description: What the package does (one paragraph).
+Description: Useful tools for automation of excel file data entry, especially transferring parts of one sheet into a sheet of another file.
 License: MIT + file LICENSE
 Encoding: UTF-8
 Roxygen: list(markdown = TRUE)
 RoxygenNote: 7.3.2
-URL: https://github.com/cbedwards-dfw/excelsior
+URL: https://github.com/cbedwards-dfw/excelsior, https://cbedwards-dfw.github.io/excelsior/, https://framverse.r-universe.dev/excelsior,
 BugReports: https://github.com/cbedwards-dfw/excelsior/issues
+Suggests: 
+    spelling,
+    testthat (>= 3.0.0)
+Config/testthat/edition: 3
+Language: en-US
+Imports: 
+    cli,
+    dplyr,
+    glue,
+    openxlsx2,
+    readxl,
+    rlang,
+    stringr,
+    tidyr
