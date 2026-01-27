@@ -1,4 +1,4 @@
-# excelsior (development version)
+# excelsior 0.0.1
 
 - `row_finder()`: finds row number based on an "anchor" cell of known column and pattern.
 - `as_numeric_smart()`: as.numeric(), but correctly handles cases of numbers with commas in them, numbers ending in %s.
