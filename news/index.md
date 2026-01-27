@@ -1,6 +1,6 @@
 # Changelog
 
-## excelsior (development version)
+## excelsior 0.0.1
 
 - [`row_finder()`](https://cbedwards-dfw.github.io/excelsior/reference/row_finder.md):
   finds row number based on an “anchor” cell of known column and

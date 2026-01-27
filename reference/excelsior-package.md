@@ -1,7 +1,7 @@
 # excelsior: Streamlines Excel File Automation
 
 Useful tools for automation of excel file data entry, especially
-transfering parts of one sheet into a sheet of another file.
+transferring parts of one sheet into a sheet of another file.
 
 ## See also
 
