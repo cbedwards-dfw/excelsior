@@ -10,8 +10,8 @@ the transfer. `row_start` and `row_end` are most easily identified using
 ``` r
 copy_columns(
   wb,
-  master_file,
-  in_file,
+  to_file,
+  from_file,
   sheet,
   columns,
   row_start,
@@ -28,11 +28,11 @@ copy_columns(
 
   An openxlsx2 workbook object to modify
 
-- master_file:
+- to_file:
 
   Character. Filepath for the "original" reference file
 
-- in_file:
+- from_file:
 
   Character. Filepath containing the workbook with data to copy FROM
 

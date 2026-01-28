@@ -24,12 +24,13 @@ row_finder(master_file, sheet, column, pattern, instance = 1, offset = 0)
 
 - column:
 
-  Character or numeric. Column letter (e.g., "A") or number to search
-  for pattern
+  Character or numeric. Column that contains anchor cell as number
+  (e.g., 3) or corresponding excel column label ("C").
 
 - pattern:
 
-  Character. Regular expression pattern to match in specified column
+  Character. Pattern to identify anchor cell. Accepts regular
+  expressions – see details.
 
 - instance:
 
@@ -44,6 +45,26 @@ row_finder(master_file, sheet, column, pattern, instance = 1, offset = 0)
 ## Value
 
 Numeric. Row number where pattern was found, adjusted by offset
+
+## Details
+
+The `pattern` argument accepts regular expressions, which are more
+flexible than just exactly matching a string. A few tips:
+
+- R treats `\` specially – if present in the pattern, surround with
+  square brackets to treat them as actual characters.
+
+- In regular expressions, the `^` symbol is used to denote the start of
+  a string, and the `$` symbol is used to denote the end of a string.
+
+As an example of this in practice, if we had an anchor cell that was the
+footnote "a/ Derived from vessel registrations and fish landing
+tickets.", we could use as a pattern any section of the text (e.g.,
+`pattern = "Derived from vessel registrations and fish"`). But if we
+wanted to ensure that the first occurrence of "a/..." was used as our
+anchor (in case the footnote text changes), we could use the pattern
+`"^a[/]"`, which in words means "the first letter is an a, and the
+second letter is literally a `/`".
 
 ## Examples
 

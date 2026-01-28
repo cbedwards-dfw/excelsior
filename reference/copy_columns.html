@@ -44,8 +44,8 @@ changes compared to a master file and adding metadata about the transfer. <code>
     <h2 id="ref-usage">Usage<a class="anchor" aria-label="anchor" href="#ref-usage"></a></h2>
     <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">copy_columns</span><span class="op">(</span></span>
 <span>  <span class="va">wb</span>,</span>
-<span>  <span class="va">master_file</span>,</span>
-<span>  <span class="va">in_file</span>,</span>
+<span>  <span class="va">to_file</span>,</span>
+<span>  <span class="va">from_file</span>,</span>
 <span>  <span class="va">sheet</span>,</span>
 <span>  <span class="va">columns</span>,</span>
 <span>  <span class="va">row_start</span>,</span>
@@ -64,11 +64,11 @@ changes compared to a master file and adding metadata about the transfer. <code>
 <dd><p>An openxlsx2 workbook object to modify</p></dd>
 
 
-<dt id="arg-master-file">master_file<a class="anchor" aria-label="anchor" href="#arg-master-file"></a></dt>
+<dt id="arg-to-file">to_file<a class="anchor" aria-label="anchor" href="#arg-to-file"></a></dt>
 <dd><p>Character. Filepath for the "original" reference file</p></dd>
 
 
-<dt id="arg-in-file">in_file<a class="anchor" aria-label="anchor" href="#arg-in-file"></a></dt>
+<dt id="arg-from-file">from_file<a class="anchor" aria-label="anchor" href="#arg-from-file"></a></dt>
 <dd><p>Character. Filepath containing the workbook with data to copy FROM</p></dd>
 
 

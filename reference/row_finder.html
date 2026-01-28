@@ -58,11 +58,11 @@ fragile to addition of rows.</p>
 
 
 <dt id="arg-column">column<a class="anchor" aria-label="anchor" href="#arg-column"></a></dt>
-<dd><p>Character or numeric. Column letter (e.g., "A") or number to search for pattern</p></dd>
+<dd><p>Character or numeric. Column that contains anchor cell as number (e.g., 3) or corresponding excel column label ("C").</p></dd>
 
 
 <dt id="arg-pattern">pattern<a class="anchor" aria-label="anchor" href="#arg-pattern"></a></dt>
-<dd><p>Character. Regular expression pattern to match in specified column</p></dd>
+<dd><p>Character. Pattern to identify anchor cell. Accepts regular expressions – see details.</p></dd>
 
 
 <dt id="arg-instance">instance<a class="anchor" aria-label="anchor" href="#arg-instance"></a></dt>
@@ -76,6 +76,12 @@ fragile to addition of rows.</p>
     <div class="section level2">
     <h2 id="value">Value<a class="anchor" aria-label="anchor" href="#value"></a></h2>
     <p>Numeric. Row number where pattern was found, adjusted by offset</p>
+    </div>
+    <div class="section level2">
+    <h2 id="details">Details<a class="anchor" aria-label="anchor" href="#details"></a></h2>
+    <p>The <code>pattern</code> argument accepts regular expressions, which are more flexible than just exactly matching a string. A few tips:</p><ul><li><p>R treats <code>\</code> specially – if present in the pattern, surround with square brackets to treat them as actual characters.</p></li>
+<li><p>In regular expressions, the <code>^</code> symbol is used to denote the start of a string, and the <code>$</code> symbol is used to denote the end of a string.</p></li>
+</ul><p>As an example of this in practice, if we had an anchor cell that was the footnote "a/  Derived from vessel registrations and fish landing tickets.", we could use as a pattern any section of the text (e.g., <code>pattern = "Derived from vessel registrations and fish"</code>). But if we wanted to ensure that the first occurrence of "a/..." was used as our anchor (in case the footnote text changes), we could use the pattern <code>"^a[/]"</code>, which in words means "the first letter is an a, and the second letter is literally a <code>/</code>".</p>
     </div>
 
     <div class="section level2">
