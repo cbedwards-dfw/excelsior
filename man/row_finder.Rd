@@ -11,9 +11,9 @@ row_finder(master_file, sheet, column, pattern, instance = 1, offset = 0)
 
 \item{sheet}{Character or numeric. Sheet name or index to search in}
 
-\item{column}{Character or numeric. Column letter (e.g., "A") or number to search for pattern}
+\item{column}{Character or numeric. Column that contains anchor cell as number (e.g., 3) or corresponding excel column label ("C").}
 
-\item{pattern}{Character. Regular expression pattern to match in specified column}
+\item{pattern}{Character. Pattern to identify anchor cell. Accepts regular expressions -- see details.}
 
 \item{instance}{Numeric. Which match to use if multiple matches found? Defaults to 1.}
 
@@ -25,6 +25,15 @@ Numeric. Row number where pattern was found, adjusted by offset
 \description{
 Excel sheets are sometimes updated to add additional rows. This function find rows of interest based of off "anchor cells" -- cells with known contents (e.g., column headers) in a known column. Using these instead of hard-coding row numbers can make automation less
 fragile to addition of rows.
+}
+\details{
+The \code{pattern} argument accepts regular expressions, which are more flexible than just exactly matching a string. A few tips:
+\itemize{
+\item R treats \verb{\\} specially -- if present in the pattern, surround with square brackets to treat them as actual characters.
+\item In regular expressions, the \code{^} symbol is used to denote the start of a string, and the \code{$} symbol is used to denote the end of a string.
+}
+
+As an example of this in practice, if we had an anchor cell that was the footnote "a/  Derived from vessel registrations and fish landing tickets.", we could use as a pattern any section of the text (e.g., \code{pattern = "Derived from vessel registrations and fish"}). But if we wanted to ensure that the first occurrence of "a/..." was used as our anchor (in case the footnote text changes), we could use the pattern \code{"^a[/]"}, which in words means "the first letter is an a, and the second letter is literally a \code{/}".
 }
 \examples{
 \dontrun{

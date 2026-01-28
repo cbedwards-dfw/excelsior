@@ -24,4 +24,9 @@ Imports:
     readxl,
     rlang,
     stringr,
-    tidyr
+    tibble,
+    tidyr,
+    utils,
+    xldiff
+Remotes:
+  cbedwards-dfw/xldiff

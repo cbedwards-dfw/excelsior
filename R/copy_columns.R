@@ -4,8 +4,8 @@
 #' changes compared to a master file and adding metadata about the transfer. `row_start` and `row_end` are most easily identified using [row_finder()].
 #'
 #' @param wb An openxlsx2 workbook object to modify
-#' @param master_file Character. Filepath for the "original" reference file
-#' @param in_file Character. Filepath containing the workbook with data to copy FROM
+#' @param to_file Character. Filepath for the "original" reference file
+#' @param from_file Character. Filepath containing the workbook with data to copy FROM
 #' @param sheet Character. Sheet name to copy from/to
 #' @param columns Character vector. Excel column letters to copy (e.g., c("A", "B"))
 #' @param row_start Integer. Initial row number to copy
@@ -17,12 +17,14 @@
 #'
 #' @return Modified workbook object with copied data, change highlighting, and metadata
 #'
+#' @export
+#'
 #' @examples
 #' \dontrun{
-#' wb <- load_workbook("master.xlsx)
+#' wb <- load_workbook("primary.xlsx)
 #' wb <- copy_columns(wb,
-#'                   master_file = "master.xlsx",
-#'                   in_file = "update.xlsx",
+#'                   to_file = "primary.xlsx",
+#'                   from_file = "update.xlsx",
 #'                   sheet = "Sheet1",
 #'                   columns = c("A", "B"),
 #'                   row_start = 2,
@@ -31,8 +33,8 @@
 #'                   meta_cell =  "D1")
 #' }
 copy_columns = function(wb,
-                        master_file,
-                        in_file,
+                        to_file,
+                        from_file,
                         sheet,
                         columns,
                         row_start,
@@ -40,9 +42,9 @@ copy_columns = function(wb,
                         color_scheme,
                         meta_cell,
                         verbose = TRUE){
-  in_file_short = glue::glue("{basename(dirname(in_file))}/{basename(in_file)}")
+  from_file_short = glue::glue("{basename(dirname(from_file))}/{basename(from_file)}")
   if(verbose){
-    cli::cli_h1("Transfering from {in_file_short}")
+    cli::cli_h1("Transfering from {from_file_short}")
   }
   for(i_col in 1:length(columns)){
     cell_range = glue::glue("{columns[i_col]}{row_start}:{columns[i_col]}{row_end}")
@@ -50,12 +52,12 @@ copy_columns = function(wb,
       cli::cli_alert("Updating {cell_range} in sheet {sheet}")
     }
 
-    dat_in = readxl::read_excel(in_file,
+    dat_in = readxl::read_excel(from_file,
                         sheet = sheet,
                         range = cell_range,
                         col_names = FALSE,
                         .name_repair = "unique_quiet")
-    dat_original = readxl::read_excel(master_file,
+    dat_original = readxl::read_excel(to_file,
                               sheet = sheet,
                               range = cell_range,
                               col_names = FALSE,
@@ -145,7 +147,7 @@ copy_columns = function(wb,
   }
 
   ## Add metadata
-  meta_dat = glue::glue("From `{in_file_short}`, copied in {date()}")
+  meta_dat = glue::glue("From `{from_file_short}`, copied in {date()}")
   wb <- wb |>
     openxlsx2::wb_add_data(sheet = sheet,
                 meta_dat,

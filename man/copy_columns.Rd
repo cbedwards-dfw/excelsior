@@ -6,8 +6,8 @@
 \usage{
 copy_columns(
   wb,
-  master_file,
-  in_file,
+  to_file,
+  from_file,
   sheet,
   columns,
   row_start,
@@ -20,9 +20,9 @@ copy_columns(
 \arguments{
 \item{wb}{An openxlsx2 workbook object to modify}
 
-\item{master_file}{Character. Filepath for the "original" reference file}
+\item{to_file}{Character. Filepath for the "original" reference file}
 
-\item{in_file}{Character. Filepath containing the workbook with data to copy FROM}
+\item{from_file}{Character. Filepath containing the workbook with data to copy FROM}
 
 \item{sheet}{Character. Sheet name to copy from/to}
 
@@ -47,10 +47,10 @@ changes compared to a master file and adding metadata about the transfer. \code{
 }
 \examples{
 \dontrun{
-wb <- load_workbook("master.xlsx)
+wb <- load_workbook("primary.xlsx)
 wb <- copy_columns(wb,
-                  master_file = "master.xlsx",
-                  in_file = "update.xlsx",
+                  to_file = "primary.xlsx",
+                  from_file = "update.xlsx",
                   sheet = "Sheet1",
                   columns = c("A", "B"),
                   row_start = 2,
