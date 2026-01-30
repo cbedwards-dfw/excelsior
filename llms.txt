@@ -32,8 +32,12 @@ install.packages(c('excelsior', 'xldiff'), repos = c('https://framverse.r-univer
   : Copy columns from one Excel file to another with change tracking
 - [`copy_section()`](https://cbedwards-dfw.github.io/excelsior/reference/copy_section.md)
   : Copy data section between locations in Excel workbook
+- [`find_fill_color()`](https://cbedwards-dfw.github.io/excelsior/reference/find_fill_color.md)
+  : Find fill color of specified cell
 - [`implant_df()`](https://cbedwards-dfw.github.io/excelsior/reference/implant_df.md)
   : Directly implant data from dataframe to openxlsx2 workbook
 - [`row_finder()`](https://cbedwards-dfw.github.io/excelsior/reference/row_finder.md)
   : Find row number based on an "anchor cell"
+- [`row_finder_by_color()`](https://cbedwards-dfw.github.io/excelsior/reference/row_finder_by_color.md)
+  : Find anchor cell based on fill color
 

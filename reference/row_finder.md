@@ -9,12 +9,12 @@ of rows.
 ## Usage
 
 ``` r
-row_finder(master_file, sheet, column, pattern, instance = 1, offset = 0)
+row_finder(filepath, sheet, column, pattern, instance = 1, offset = 0)
 ```
 
 ## Arguments
 
-- master_file:
+- filepath:
 
   Character. Filepath to Excel file of interest
 
