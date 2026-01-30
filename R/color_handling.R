@@ -75,9 +75,9 @@ row_finder_by_color <- function(filepath,
 #'
 #' @examples
 #' \dontrun{
-#' find_color(primary_file, "D-3", "A103")
+#' find_fill_color(primary_file, "D-3", "A103")
 #' }
-find_color <- function(filepath, sheet, address){
+find_fill_color <- function(filepath, sheet, address){
   validate_character(filepath, 1)
   validate_character(sheet, 1)
   validate_cell_address(address, 1)
@@ -93,4 +93,3 @@ find_color <- function(filepath, sheet, address){
   return(color)
 }
 
-# find_color(primary_file, "D-3", "A103")
