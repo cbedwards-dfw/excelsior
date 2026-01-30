@@ -65,8 +65,8 @@ validate_integer <- function(x, n = NULL, ..., arg = rlang::caller_arg(x), call 
 }
 
 validate_wb <- function(x, ..., arg = rlang::caller_arg(x), call = rlang::caller_env()){
-  if (! ("wbWorkbook" %in% class(wb) )) {
-    cli::cli_abort("{.arg {wb}} must be an openxlsx2 workbook(a `wbWorkbook` object), not {.obj_type_friendly {x}}", ..., call = call)
+  if (! ("wbWorkbook" %in% class(x) )) {
+    cli::cli_abort("{.arg {x}} must be an openxlsx2 workbook(a `wbWorkbook` object), not {.obj_type_friendly {x}}", ..., call = call)
   }
 }
 
@@ -80,7 +80,7 @@ validate_excel_column <- function(x, n = NULL, ..., arg = rlang::caller_arg(x), 
   }
 }
 
-validate_hex_color <- function(x, n = null, ..., arg = rlang::caller_arg(x), call = rlang::caller_env()) {
+validate_hex_color <- function(x, n = NULL, ..., arg = rlang::caller_arg(x), call = rlang::caller_env()) {
   # Check if it's a character vector
   validate_character(x, n = n, arg = arg, call = call)
 
@@ -96,3 +96,45 @@ validate_hex_color <- function(x, n = null, ..., arg = rlang::caller_arg(x), cal
     cli::cli_abort("{.arg {arg}} must be {n} hex color code(s) (e.g., \"FF0000\"). Invalid values {.val {invalid_values}} at positions {.val {invalid_indices}}.", ..., call = call)
   }
 }
+
+validate_cell_address <- function(x, n = NULL, ..., arg = rlang::caller_arg(x), call = rlang::caller_env()) {
+  validate_character(x, n = n, arg = arg, call = call)
+
+  pattern <- "^[A-Z]+[0-9]+$"
+  if (!all(grepl(pattern, x))) {
+    cli::cli_abort("Elements of {.arg {arg}} must be valid Excel cell addresses (e.g., 'A1', 'B10', 'AA100').",
+                   ..., call = call)
+  }
+}
+
+validate_cell_range <- function(x, n = NULL, single_cell_allowed = TRUE, ..., arg = rlang::caller_arg(x), call = rlang::caller_env()) {
+  validate_character(x, n = n, arg = arg, call = call)
+
+  pattern <- "^[A-Z]+[0-9]+:[A-Z]+[0-9]+$"
+  if(single_cell_allowed){
+    pattern = paste0(pattern, "|^[A-Z]+[0-9]+$")
+  }
+  if (!all(grepl(pattern, x))) {
+    if(single_cell_allowed){
+      cli::cli_abort("Elements of {.arg {arg}} must be valid Excel cell ranges or cell address (e.g., 'D5', 'A1:B10', 'C5:AA100').",
+                     ..., call = call)
+    } else {
+      cli::cli_abort("Elements of {.arg {arg}} must be valid Excel cell ranges (e.g., 'A1:B10', 'C5:AA100'). Single cell addresses (e.g., 'D5') are not allowed.",
+                     ..., call = call)
+    }
+  }
+}
+
+validate_excel_sheet <- function(sheet, filepath, n = NULL, ..., arg = rlang::caller_arg(sheet), call = rlang::caller_env()) {
+  validate_character(x = sheet, n = n)
+  all_sheets <- readxl::excel_sheets(filepath)
+  missing_sheets = setdiff(sheet, all_sheets)
+  if(length(missing_sheets)>0){
+    cli::cli_abort("{.arg {arg}} must contains sheets present in the excel file! {.val {missing_sheets}} not present in file. Available sheets: {.val {all_sheets}}.",
+                   ..., call = call)
+  }
+}
+
+
+# validate_cell_range("")
+

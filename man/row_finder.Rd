@@ -4,10 +4,10 @@
 \alias{row_finder}
 \title{Find row number based on an "anchor cell"}
 \usage{
-row_finder(master_file, sheet, column, pattern, instance = 1, offset = 0)
+row_finder(filepath, sheet, column, pattern, instance = 1, offset = 0)
 }
 \arguments{
-\item{master_file}{Character. Filepath to Excel file of interest}
+\item{filepath}{Character. Filepath to Excel file of interest}
 
 \item{sheet}{Character or numeric. Sheet name or index to search in}
 

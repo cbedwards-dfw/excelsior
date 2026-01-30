@@ -10,7 +10,7 @@
 #'
 #'  As an example of this in practice, if we had an anchor cell that was the footnote "a/  Derived from vessel registrations and fish landing tickets.", we could use as a pattern any section of the text (e.g., `pattern = "Derived from vessel registrations and fish"`). But if we wanted to ensure that the first occurrence of "a/..." was used as our anchor (in case the footnote text changes), we could use the pattern `"^a[/]"`, which in words means "the first letter is an a, and the second letter is literally a `/`".
 #'
-#' @param master_file Character. Filepath to Excel file of interest
+#' @param filepath Character. Filepath to Excel file of interest
 #' @param sheet Character or numeric. Sheet name or index to search in
 #' @param column Character or numeric. Column that contains anchor cell as number (e.g., 3) or corresponding excel column label ("C").
 #' @param pattern Character. Pattern to identify anchor cell. Accepts regular expressions -- see details.
@@ -27,14 +27,14 @@
 #'
 #' @export
 ## Finds rows based off an "anchor" cell in specific column with known pattern.
-row_finder <- function(master_file,
+row_finder <- function(filepath,
                        sheet,
                        column,
                        pattern,
                        instance = 1,
                        offset = 0){
 
-  validate_character(master_file, n = 1)
+  validate_character(filepath, n = 1)
   validate_character(sheet, n = 1)
   ## validating column
   if(!is.numeric(column) & !is.character(column)){
@@ -54,7 +54,7 @@ row_finder <- function(master_file,
     column = openxlsx2::col2int(column)
   }
 
-  raw <- readxl::read_excel(master_file,
+  raw <- readxl::read_excel(filepath,
                     sheet = sheet,
                     col_names = FALSE,
                     .name_repair = "unique_quiet")

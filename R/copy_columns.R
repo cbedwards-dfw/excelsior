@@ -42,6 +42,17 @@ copy_columns = function(wb,
                         color_scheme,
                         meta_cell,
                         verbose = TRUE){
+
+  validate_wb(wb)
+  validate_character(to_file, n = 1)
+  validate_character(from_file, n = 1)
+  validate_excel_sheet(sheet, n = 1)
+  validate_integer(row_start, n = 1)
+  validate_integer(row_end, n = 1)
+  validate_hex_color(color_scheme, n = 2)
+  validate_cell_address(meta_cell, n = 1)
+  validate_flag(verbose)
+
   from_file_short = glue::glue("{basename(dirname(from_file))}/{basename(from_file)}")
   if(verbose){
     cli::cli_h1("Transfering from {from_file_short}")
