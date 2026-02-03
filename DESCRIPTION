@@ -28,6 +28,6 @@ Imports:
     tidyr,
     tidyxl,
     utils,
-    xldiff
+    xldiff (>= 0.2.0)
 Remotes:
   cbedwards-dfw/xldiff
