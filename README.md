@@ -4,6 +4,8 @@
 # excelsior
 
 <!-- badges: start -->
+
+[![R-CMD-check](https://github.com/cbedwards-dfw/excelsior/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/cbedwards-dfw/excelsior/actions/workflows/R-CMD-check.yaml)
 <!-- badges: end -->
 
 The goal of excelsior is to provide tools for automating data entry that
