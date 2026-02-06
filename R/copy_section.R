@@ -49,16 +49,16 @@ copy_section <- function(wb,
   ## check that from_address and to_address dimensions match
   df_dims_full = cell_range_translate(from_address)
   df_dims_to_full = cell_range_translate(to_address)
-  if(length(unique(.data$df_dims_full$row)) != length(unique(.data$df_dims_to_full$row)) ||
-     length(unique(.data$df_dims_full$col)) != length(unique(.data$df_dims_to_full$col))
+  if(length(unique(df_dims_full$row)) != length(unique(df_dims_to_full$row)) ||
+     length(unique(df_dims_full$col)) != length(unique(df_dims_to_full$col))
   ){
     cli::cli_abort("Size of `from_address` and `to_address` must match!")
   }
 
   ## if offset row is present, check for matching references
   if(!is.null(check_row_offset)){
-    ref_from <- from_df[.data$df_dims$row[1] - check_row_offset,
-                        .data$df_dims$col[1]:.data$df_dims$col[2]] |>
+    ref_from <- from_df[df_dims$row[1] - check_row_offset,
+                        df_dims$col[1]:df_dims$col[2]] |>
       ## convert NAs to ""s for better comparing
       dplyr::mutate(dplyr::across(dplyr::everything(), \(x) dplyr::coalesce(x, "")))|>
       ## make sure leading/trailing strings are handled consistently
@@ -70,8 +70,8 @@ copy_section <- function(wb,
     }
     ref_to <- openxlsx2::wb_to_df(wb,
                                   sheet = sheet,
-                                  col_names = FALSE)[.data$df_dims_to$row[1] - check_row_offset,
-                                                     .data$df_dims_to$col[1]:.data$df_dims_to$col[2]]  |>
+                                  col_names = FALSE)[df_dims_to$row[1] - check_row_offset,
+                                                     df_dims_to$col[1]:df_dims_to$col[2]]  |>
       tibble::tibble() |>
       ## convert NAs to ""s for better comparing
       dplyr::mutate(dplyr::across(dplyr::everything(), \(x) dplyr::coalesce(x, ""))) |>
@@ -85,8 +85,8 @@ copy_section <- function(wb,
 
   ## if offset col is present, check for matching references
   if(!is.null(check_col_offset)){
-    ref_from <- tibble::tibble(from_df[.data$df_dims$row[1]:.data$df_dims$row[2],
-                                       .data$df_dims$col[1] - check_col_offset]) |>
+    ref_from <- tibble::tibble(from_df[df_dims$row[1]:df_dims$row[2],
+                                       df_dims$col[1] - check_col_offset]) |>
       ## convert NAs to ""s for better comparing
       dplyr::mutate(dplyr::across(dplyr::everything(), \(x) dplyr::coalesce(x, "")))|>
       ## make sure leading/trailing strings are handled consistently
@@ -98,8 +98,8 @@ copy_section <- function(wb,
     }
     ref_to <- openxlsx2::wb_to_df(wb,
                                   sheet = sheet,
-                                  col_names = FALSE)[.data$df_dims_to$row[1]:.data$df_dims_to$row[2],
-                                                     .data$df_dims_to$col[1] - check_col_offset]  |>
+                                  col_names = FALSE)[df_dims_to$row[1]:df_dims_to$row[2],
+                                                     df_dims_to$col[1] - check_col_offset]  |>
       tibble::tibble() |>
       ## convert NAs to ""s for better comparing
       dplyr::mutate(dplyr::across(dplyr::everything(), \(x) dplyr::coalesce(x, ""))) |>
@@ -112,8 +112,8 @@ copy_section <- function(wb,
 
 
   ## do the copying
-  new_dat = from_df[(.data$df_dims$row[1]:.data$df_dims$row[2]),
-                    .data$df_dims$col[1]:.data$df_dims$col[2]]
+  new_dat = from_df[(df_dims$row[1]:df_dims$row[2]),
+                    df_dims$col[1]:df_dims$col[2]]
 
   implant_df(wb,
              new_dat = new_dat,
