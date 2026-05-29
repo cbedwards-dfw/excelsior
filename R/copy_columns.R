@@ -54,39 +54,68 @@ copy_columns = function(wb,
   validate_cell_address(meta_cell, n = 1)
   validate_flag(verbose)
 
+
   from_file_short = glue::glue("{basename(dirname(from_file))}/{basename(from_file)}")
   if(verbose){
     cli::cli_h1("Transfering from {from_file_short}")
   }
+
+  ## for finding formulas
+  wb_sheet <- openxlsx2::wb_load(from_file, sheet = sheet)
+  ind = which(wb_sheet$sheet_names == sheet)
+  cells_with_formulas = wb_sheet$worksheets[[ind]]$sheet_data$cc |>
+    dplyr::filter(f != "") |>
+    dplyr::pull(r)
+
+
   for(i_col in 1:length(columns)){
     cell_range = glue::glue("{columns[i_col]}{row_start}:{columns[i_col]}{row_end}")
     if(verbose){
       cli::cli_alert("Updating {cell_range} in sheet {sheet}")
     }
 
-    dat_in = readxl::read_excel(from_file,
-                        sheet = sheet,
-                        range = cell_range,
-                        col_names = FALSE,
-                        .name_repair = "unique_quiet")
-    dat_original = readxl::read_excel(to_file,
-                              sheet = sheet,
-                              range = cell_range,
-                              col_names = FALSE,
-                              .name_repair = "unique_quiet")
-    dat_changed <- dat_in != dat_original
-    dat_changed = dplyr::coalesce(dat_changed, FALSE)
+    # dat_in = readxl::read_excel(from_file,
+    #                             sheet = sheet,
+    #                             range = cell_range,
+    #                             col_names = FALSE,
+    #                             .name_repair = "unique_quiet")
 
+    # dat_original = readxl::read_excel(to_file,
+    #                                   sheet = sheet,
+    #                                   range = cell_range,
+    #                                   col_names = FALSE,
+    #                                   .name_repair = "unique_quiet")
+
+    dat_original = openxlsx2::wb_read(to_file,
+                                      sheet = sheet,
+                                      dims = cell_range,
+                                      col_names = FALSE,
+                                      show_formula = TRUE
+    ) |>
+      tibble::as_tibble()
+
+    dat_in = openxlsx2::wb_read(from_file,
+                                sheet = sheet,
+                                dims = cell_range,
+                                col_names = FALSE,
+                                show_formula = TRUE
+    ) |>
+      tibble::as_tibble()
+
+    dat_changed <- dat_in != dat_original
+    dat_changed_na_status <- is.na(dat_in) != is.na(dat_original)
+    dat_changed = dplyr::coalesce(dat_changed, dat_changed_na_status)
 
     names(dat_in)[1] = "dat"
     dat_in$ind = seq.int(nrow(dat_in))
     dat_in$changed = as.vector(dat_changed)
     dat_in$cell = glue::glue("{columns[i_col]}{row_start:row_end}")
+    dat_in$is_formula = dat_in$cell %in% cells_with_formulas
     suppressWarnings({
       dat_in <- dat_in |>
         dplyr::mutate(color = dplyr::if_else(.data$changed,
-                               color_scheme[1],
-                               color_scheme[2])) |>
+                                             color_scheme[1],
+                                             color_scheme[2])) |>
         dplyr::mutate(numeric_check = !is.na(as_numeric_smart(.data$dat)))
     })
 
@@ -98,20 +127,21 @@ copy_columns = function(wb,
         row = as.integer(stringr::str_extract(.data$cell, "[0-9]+$")),
         # Create group ID for contiguous cells with same changed/check_numeric
         group_id = cumsum(.data$numeric_check != dplyr::lag(.data$numeric_check, default = !.data$numeric_check[1]) |
+                            .data$is_formula != dplyr::lag(.data$is_formula, default = !.data$is_formula[1]) |
                             .data$row != dplyr::lag(.data$row, default = .data$row[1] - 1) + 1)
       ) |>
-      dplyr::group_by(.data$group_id, .data$numeric_check)  |>
+      dplyr::group_by(.data$group_id, .data$numeric_check, .data$is_formula)  |>
       dplyr::summarise(
         start_cell = dplyr::first(.data$cell),
         end_cell = dplyr::last(.data$cell),
         start_ind = dplyr::first(.data$ind),
         end_ind = dplyr::last(.data$ind),
         cell_range = dplyr::if_else(dplyr::first(.data$cell) == dplyr::last(.data$cell),
-                             dplyr::first(.data$cell),
-                             paste0(dplyr::first(.data$cell), ":", dplyr::last(.data$cell))),
+                                    dplyr::first(.data$cell),
+                                    paste0(dplyr::first(.data$cell), ":", dplyr::last(.data$cell))),
         .groups = "drop"
       ) |>
-      dplyr::select(-.data$start_cell, -.data$end_cell)
+      dplyr::select(-"start_cell", -"end_cell")
 
     if(nrow(dat_update)>0){
       for(i_row in 1:nrow(dat_update)){
@@ -121,12 +151,21 @@ copy_columns = function(wb,
           dat_cur = as_numeric_smart(dat_cur) |>
             round(digits = 10)
         }
-        wb = wb |>
-          openxlsx2::wb_add_data(sheet = sheet,
-                      dat_cur,
-                      dims = dat_update$cell_range[i_row],
-                      col_names = FALSE,
-                      na = "")
+
+        if(dat_update$is_formula[i_row]){
+          wb = wb |>
+            openxlsx2::wb_add_formula(sheet = sheet,
+                                   dat_cur,
+                                   dims = dat_update$cell_range[i_row]
+                                   )
+        } else {
+          wb = wb |>
+            openxlsx2::wb_add_data(sheet = sheet,
+                                   dat_cur,
+                                   dims = dat_update$cell_range[i_row],
+                                   col_names = FALSE,
+                                   na = "")
+        }
       }
     }
 
@@ -146,15 +185,15 @@ copy_columns = function(wb,
         start_cell = dplyr::first(.data$cell),
         end_cell = dplyr::last(.data$cell),
         cell_range = dplyr::if_else(dplyr::first(.data$cell) == dplyr::last(.data$cell),
-                             dplyr::first(.data$cell),
-                             paste0(dplyr::first(.data$cell), ":", dplyr::last(.data$cell))),
+                                    dplyr::first(.data$cell),
+                                    paste0(dplyr::first(.data$cell), ":", dplyr::last(.data$cell))),
         .groups = "drop"
       )
     for(i_color in 1:nrow(dat_colors)){
       wb <- wb |>
         openxlsx2::wb_add_fill(sheet = sheet,
-                    dims = dat_colors$cell_range[i_color],
-                    color = openxlsx2::wb_color(hex = dat_colors$color[i_color]))
+                               dims = dat_colors$cell_range[i_color],
+                               color = openxlsx2::wb_color(hex = dat_colors$color[i_color]))
     }
   }
 
@@ -162,12 +201,12 @@ copy_columns = function(wb,
   meta_dat = glue::glue("From `{from_file_short}`, copied in {date()}")
   wb <- wb |>
     openxlsx2::wb_add_data(sheet = sheet,
-                meta_dat,
-                dims = meta_cell,
-                col_names = FALSE) |>
+                           meta_dat,
+                           dims = meta_cell,
+                           col_names = FALSE) |>
     openxlsx2::wb_add_fill(sheet = sheet,
-                dims = meta_cell,
-                color = openxlsx2::wb_color(hex = color_scheme[1]))
+                           dims = meta_cell,
+                           color = openxlsx2::wb_color(hex = color_scheme[1]))
 
   return(wb)
 }

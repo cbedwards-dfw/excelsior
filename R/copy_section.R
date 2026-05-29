@@ -2,7 +2,7 @@
 #'
 #' Designed with updating in mind. Copies data from one location to another within an Excel workbook, with optional validation checks for matching reference rows/columns.
 #' This is a safe version of saying "Copy sheet C3:D4 of sheet 1 to E5:F6 of sheet 2".
-#' To support speed, this function takes as arguments the openxlsx2 workbook object  to be updated, and a dataframe to update FROM.
+#' To support speed, this function takes as arguments the openxlsx2 workbook object to be updated, and a dataframe to update FROM.
 #'
 #' The key feature of this function is optional checking, in which the first column or row of the "from_db"
 #' is checked against a corresponding column or row of the "to_address" to make sure the entries are still appropriate.
