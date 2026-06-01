@@ -57,7 +57,7 @@ copy_columns = function(wb,
 
   from_file_short = glue::glue("{basename(dirname(from_file))}/{basename(from_file)}")
   if(verbose){
-    cli::cli_h1("Transfering from {from_file_short}")
+    cli::cli_h1("Transferring {sheet} from {from_file_short}")
   }
 
   ## for finding formulas
