@@ -14,6 +14,8 @@
   : Find fill color of specified cell
 - [`implant_df()`](https://cbedwards-dfw.github.io/excelsior/reference/implant_df.md)
   : Directly implant data from dataframe to openxlsx2 workbook
+- [`read_excel_tiered_headers()`](https://cbedwards-dfw.github.io/excelsior/reference/read_excel_tiered_headers.md)
+  : Read an Excel file with multi-row headers
 - [`row_finder()`](https://cbedwards-dfw.github.io/excelsior/reference/row_finder.md)
   : Find row number based on an "anchor cell"
 - [`row_finder_by_color()`](https://cbedwards-dfw.github.io/excelsior/reference/row_finder_by_color.md)
