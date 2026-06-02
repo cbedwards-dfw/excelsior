@@ -44,6 +44,8 @@ collapse_helper = function(x, sep_char = "_"){
 #'   data row. Column names are the combined headers derived from
 #'   \code{header_rows}.
 #'
+#' @export
+#'
 #' @examples
 #' \dontrun{
 #' # Basic usage: rows 2-4 are headers, data starts at row 5
@@ -93,7 +95,9 @@ read_excel_tiered_headers <- function(path,
     headers_clean <- make.names(headers_clean, unique = TRUE)
   }
 
-  data <- openxlsx2::read_xlsx(path, rows = first_data_row:final_data_row,
+  data <- openxlsx2::read_xlsx(path,
+                               sheet = sheet,
+                               rows = first_data_row:final_data_row,
                                fill_merged_cells = TRUE,
                                col_names = FALSE)
   names(data) <- headers_clean
