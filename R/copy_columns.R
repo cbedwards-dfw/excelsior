@@ -64,8 +64,8 @@ copy_columns = function(wb,
   wb_sheet <- openxlsx2::wb_load(from_file, sheet = sheet)
   ind = which(wb_sheet$sheet_names == sheet)
   cells_with_formulas = wb_sheet$worksheets[[ind]]$sheet_data$cc |>
-    dplyr::filter(f != "") |>
-    dplyr::pull(r)
+    dplyr::filter(.data$f != "") |>
+    dplyr::pull("r")
 
 
   for(i_col in 1:length(columns)){
