@@ -25,10 +25,11 @@ collapse_helper = function(x, sep_char = "_"){
 #' attempted.
 #'
 #' @param path Character. Path to the \code{.xlsx} file.
-#' @param sheet Integer or character atomic Sheet index to read. Default \code{1}.
+#' @param sheet Integer or character atomic Sheet index to read. Default \code{1} to automatically handle cases with a single sheet.
 #' @param header_rows Integer vector. Row numbers (1-indexed, as they appear
-#'   in the spreadsheet) that together form the column headers. Default
-#'   \code{c(2, 3, 4)}.
+#'   in the spreadsheet) that together form the column headers.
+#' @param pseudo_merged_rows Integer vector. Row numbers (1-indexed, as they appear
+#'   in the spreadsheet) for header rows that include "false merged cells" -- cells that look like they're merged because the first cell of a group has weird formatting that shifts the text far to the right. Warning: this can create funky names cases in which there are gaps columns in the merged row. This is NOT necessary if the excel cells are *actually* merged. Defaults to NULL.
 #' @param first_data_row Integer or \code{NULL}. Row number of the first data
 #'   row. If \code{NULL} (default), set to \code{max(header_rows) + 1}.
 #' @param final_data_row Integer or \code{NULL}. Row number of the last data
@@ -69,6 +70,7 @@ collapse_helper = function(x, sep_char = "_"){
 read_excel_tiered_headers <- function(path,
                                       sheet = 1,
                                       header_rows,
+                                      pseudo_merged_rows = NULL,
                                       first_data_row = NULL,
                                       final_data_row = NULL,
                                       sep = "_",
@@ -83,6 +85,12 @@ read_excel_tiered_headers <- function(path,
                               sheet = sheet,
                               fill_merged_cells = TRUE,
                               col_names = FALSE)
+
+  if(!is.null(pseudo_merged_rows)){
+    for(cur_row in pseudo_merged_rows){
+      raw[cur_row, ] = zoo::na.locf(as.vector(raw[cur_row, ]), na.rm = FALSE)
+    }
+  }
 
   if(is.null(final_data_row)){
     final_data_row = nrow(raw)
@@ -100,7 +108,7 @@ read_excel_tiered_headers <- function(path,
                                rows = first_data_row:final_data_row,
                                fill_merged_cells = TRUE,
                                col_names = FALSE)
-  names(data) <- headers_clean
+  names(data) <- headers_clean[1:ncol(data)]
 
   return(data)
 }

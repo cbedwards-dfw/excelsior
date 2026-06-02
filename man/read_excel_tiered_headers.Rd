@@ -8,6 +8,7 @@ read_excel_tiered_headers(
   path,
   sheet = 1,
   header_rows,
+  pseudo_merged_rows = NULL,
   first_data_row = NULL,
   final_data_row = NULL,
   sep = "_",
@@ -17,11 +18,13 @@ read_excel_tiered_headers(
 \arguments{
 \item{path}{Character. Path to the \code{.xlsx} file.}
 
-\item{sheet}{Integer or character atomic Sheet index to read. Default \code{1}.}
+\item{sheet}{Integer or character atomic Sheet index to read. Default \code{1} to automatically handle cases with a single sheet.}
 
 \item{header_rows}{Integer vector. Row numbers (1-indexed, as they appear
-in the spreadsheet) that together form the column headers. Default
-\code{c(2, 3, 4)}.}
+in the spreadsheet) that together form the column headers.}
+
+\item{pseudo_merged_rows}{Integer vector. Row numbers (1-indexed, as they appear
+in the spreadsheet) for header rows that include "false merged cells" -- cells that look like they're merged because the first cell of a group has weird formatting that shifts the text far to the right. Warning: this can create funky names cases in which there are gaps columns in the merged row. This is NOT necessary if the excel cells are \emph{actually} merged. Defaults to NULL.}
 
 \item{first_data_row}{Integer or \code{NULL}. Row number of the first data
 row. If \code{NULL} (default), set to \code{max(header_rows) + 1}.}
