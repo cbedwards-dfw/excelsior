@@ -14,6 +14,7 @@ read_excel_tiered_headers(
   path,
   sheet = 1,
   header_rows,
+  pseudo_merged_rows = NULL,
   first_data_row = NULL,
   final_data_row = NULL,
   sep = "_",
@@ -29,13 +30,23 @@ read_excel_tiered_headers(
 
 - sheet:
 
-  Integer or character atomic Sheet index to read. Default `1`.
+  Integer or character atomic Sheet index to read. Default `1` to
+  automatically handle cases with a single sheet.
 
 - header_rows:
 
   Integer vector. Row numbers (1-indexed, as they appear in the
-  spreadsheet) that together form the column headers. Default
-  `c(2, 3, 4)`.
+  spreadsheet) that together form the column headers.
+
+- pseudo_merged_rows:
+
+  Integer vector. Row numbers (1-indexed, as they appear in the
+  spreadsheet) for header rows that include "false merged cells" – cells
+  that look like they're merged because the first cell of a group has
+  weird formatting that shifts the text far to the right. Warning: this
+  can create funky names cases in which there are gaps columns in the
+  merged row. This is NOT necessary if the excel cells are *actually*
+  merged. Defaults to NULL.
 
 - first_data_row:
 

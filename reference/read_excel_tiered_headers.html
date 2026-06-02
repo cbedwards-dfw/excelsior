@@ -58,6 +58,7 @@ superheader "TREATY" spanning columns that are individually labelled
 <span>  <span class="va">path</span>,</span>
 <span>  sheet <span class="op">=</span> <span class="fl">1</span>,</span>
 <span>  <span class="va">header_rows</span>,</span>
+<span>  pseudo_merged_rows <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  first_data_row <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  final_data_row <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  sep <span class="op">=</span> <span class="st">"_"</span>,</span>
@@ -74,13 +75,17 @@ superheader "TREATY" spanning columns that are individually labelled
 
 
 <dt id="arg-sheet">sheet<a class="anchor" aria-label="anchor" href="#arg-sheet"></a></dt>
-<dd><p>Integer or character atomic Sheet index to read. Default <code>1</code>.</p></dd>
+<dd><p>Integer or character atomic Sheet index to read. Default <code>1</code> to automatically handle cases with a single sheet.</p></dd>
 
 
 <dt id="arg-header-rows">header_rows<a class="anchor" aria-label="anchor" href="#arg-header-rows"></a></dt>
 <dd><p>Integer vector. Row numbers (1-indexed, as they appear
-in the spreadsheet) that together form the column headers. Default
-<code>c(2, 3, 4)</code>.</p></dd>
+in the spreadsheet) that together form the column headers.</p></dd>
+
+
+<dt id="arg-pseudo-merged-rows">pseudo_merged_rows<a class="anchor" aria-label="anchor" href="#arg-pseudo-merged-rows"></a></dt>
+<dd><p>Integer vector. Row numbers (1-indexed, as they appear
+in the spreadsheet) for header rows that include "false merged cells" – cells that look like they're merged because the first cell of a group has weird formatting that shifts the text far to the right. Warning: this can create funky names cases in which there are gaps columns in the merged row. This is NOT necessary if the excel cells are <em>actually</em> merged. Defaults to NULL.</p></dd>
 
 
 <dt id="arg-first-data-row">first_data_row<a class="anchor" aria-label="anchor" href="#arg-first-data-row"></a></dt>
