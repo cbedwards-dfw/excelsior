@@ -12,6 +12,9 @@ RoxygenNote: 7.3.2
 URL: https://github.com/cbedwards-dfw/excelsior, https://cbedwards-dfw.github.io/excelsior/, https://framverse.r-universe.dev/excelsior,
 BugReports: https://github.com/cbedwards-dfw/excelsior/issues
 Suggests: 
+    janitor,
+    knitr,
+    rmarkdown,
     spelling,
     testthat (>= 3.0.0)
 Config/testthat/edition: 3
@@ -32,3 +35,4 @@ Imports:
     zoo
 Remotes:
   cbedwards-dfw/xldiff
+VignetteBuilder: knitr

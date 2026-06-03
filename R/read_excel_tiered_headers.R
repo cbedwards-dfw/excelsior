@@ -35,6 +35,8 @@ collapse_helper = function(x, sep_char = "_"){
 #' @param final_data_row Integer or \code{NULL}. Row number of the last data
 #'   row. If \code{NULL} (default), all rows from \code{first_data_row} to
 #'   the end of the sheet are returned.
+#' @param first_column Integer or \code{NULL}. Column number of the first column to read in. If \code{NULL} (default), uses default behavior of `openxlsx2::read_xlsx()`.
+#' @param final_column Integer or \code{NULL}. Column number of the last column to read in. If \code{NULL} (default), uses default behavior of `openxlsx2::read_xlsx()`.
 #' @param sep Character. Separator used when joining header parts from
 #'   different rows. Default \code{"_"}.
 #' @param clean_names Logical. Resolves issues in which column names are not unique.  If \code{TRUE} (default), column names are
@@ -73,6 +75,8 @@ read_excel_tiered_headers <- function(path,
                                       pseudo_merged_rows = NULL,
                                       first_data_row = NULL,
                                       final_data_row = NULL,
+                                      first_column = NULL,
+                                      final_column = NULL,
                                       sep = "_",
                                       clean_names = TRUE){
 
@@ -80,10 +84,27 @@ read_excel_tiered_headers <- function(path,
     first_data_row <- max(header_rows) + 1
   }
 
+  ## handling column ranges
+  start_col = NULL ## need to exist as null unless modified in following clause
+  if(!is.null(final_column)){
+    if(is.null(first_column)){
+      cols = 1:final_column
+    } else {
+      cols = first_column:final_column
+    }
+  } else {
+    cols = NULL
+    if(!is.null(first_column)){
+      start_col = first_column
+    }
+  }
+
   ## read in, respecting merged cells
   raw <- openxlsx2::read_xlsx(path,
                               sheet = sheet,
                               start_row = 1,
+                              start_col = start_col,
+                              cols = cols,
                               fill_merged_cells = TRUE,
                               col_names = FALSE)
 
@@ -107,6 +128,8 @@ read_excel_tiered_headers <- function(path,
   data <- openxlsx2::read_xlsx(path,
                                sheet = sheet,
                                rows = first_data_row:final_data_row,
+                               start_col = start_col,
+                               cols = cols,
                                fill_merged_cells = TRUE,
                                col_names = FALSE)
   names(data) <- headers_clean[1:ncol(data)]

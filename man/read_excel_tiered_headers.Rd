@@ -11,6 +11,8 @@ read_excel_tiered_headers(
   pseudo_merged_rows = NULL,
   first_data_row = NULL,
   final_data_row = NULL,
+  first_column = NULL,
+  final_column = NULL,
   sep = "_",
   clean_names = TRUE
 )
@@ -32,6 +34,10 @@ row. If \code{NULL} (default), set to \code{max(header_rows) + 1}.}
 \item{final_data_row}{Integer or \code{NULL}. Row number of the last data
 row. If \code{NULL} (default), all rows from \code{first_data_row} to
 the end of the sheet are returned.}
+
+\item{first_column}{Integer or \code{NULL}. Column number of the first column to read in. If \code{NULL} (default), uses default behavior of \code{openxlsx2::read_xlsx()}.}
+
+\item{final_column}{Integer or \code{NULL}. Column number of the last column to read in. If \code{NULL} (default), uses default behavior of \code{openxlsx2::read_xlsx()}.}
 
 \item{sep}{Character. Separator used when joining header parts from
 different rows. Default \code{"_"}.}
