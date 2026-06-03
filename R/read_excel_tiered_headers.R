@@ -83,6 +83,7 @@ read_excel_tiered_headers <- function(path,
   ## read in, respecting merged cells
   raw <- openxlsx2::read_xlsx(path,
                               sheet = sheet,
+                              start_row = 1,
                               fill_merged_cells = TRUE,
                               col_names = FALSE)
 
