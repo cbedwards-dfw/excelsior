@@ -25,7 +25,8 @@ superheader "TREATY" spanning columns that are individually labelled
     </button>
 
     <div id="navbar" class="collapse navbar-collapse ms-3">
-      <ul class="navbar-nav me-auto"><li class="active nav-item"><a class="nav-link" href="../reference/index.html">Reference</a></li>
+      <ul class="navbar-nav me-auto"><li class="nav-item"><a class="nav-link" href="../articles/excelsior.html">Get started</a></li>
+<li class="active nav-item"><a class="nav-link" href="../reference/index.html">Reference</a></li>
 <li class="nav-item"><a class="nav-link" href="../news/index.html">Changelog</a></li>
       </ul><ul class="navbar-nav"><li class="nav-item"><form class="form-inline" role="search">
  <input class="form-control" type="search" name="search-input" id="search-input" autocomplete="off" aria-label="Search site" placeholder="Search for" data-search-index="../search.json"></form></li>
@@ -61,6 +62,8 @@ superheader "TREATY" spanning columns that are individually labelled
 <span>  pseudo_merged_rows <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  first_data_row <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  final_data_row <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  first_column <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  final_column <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  sep <span class="op">=</span> <span class="st">"_"</span>,</span>
 <span>  clean_names <span class="op">=</span> <span class="cn">TRUE</span></span>
 <span><span class="op">)</span></span></code></pre></div>
@@ -97,6 +100,14 @@ row. If <code>NULL</code> (default), set to <code>max(header_rows) + 1</code>.</
 <dd><p>Integer or <code>NULL</code>. Row number of the last data
 row. If <code>NULL</code> (default), all rows from <code>first_data_row</code> to
 the end of the sheet are returned.</p></dd>
+
+
+<dt id="arg-first-column">first_column<a class="anchor" aria-label="anchor" href="#arg-first-column"></a></dt>
+<dd><p>Integer or <code>NULL</code>. Column number of the first column to read in. If <code>NULL</code> (default), uses default behavior of <code><a href="https://janmarvin.github.io/openxlsx2/reference/wb_to_df.html" class="external-link">openxlsx2::read_xlsx()</a></code>.</p></dd>
+
+
+<dt id="arg-final-column">final_column<a class="anchor" aria-label="anchor" href="#arg-final-column"></a></dt>
+<dd><p>Integer or <code>NULL</code>. Column number of the last column to read in. If <code>NULL</code> (default), uses default behavior of <code><a href="https://janmarvin.github.io/openxlsx2/reference/wb_to_df.html" class="external-link">openxlsx2::read_xlsx()</a></code>.</p></dd>
 
 
 <dt id="arg-sep">sep<a class="anchor" aria-label="anchor" href="#arg-sep"></a></dt>

@@ -17,6 +17,8 @@ read_excel_tiered_headers(
   pseudo_merged_rows = NULL,
   first_data_row = NULL,
   final_data_row = NULL,
+  first_column = NULL,
+  final_column = NULL,
   sep = "_",
   clean_names = TRUE
 )
@@ -58,6 +60,18 @@ read_excel_tiered_headers(
   Integer or `NULL`. Row number of the last data row. If `NULL`
   (default), all rows from `first_data_row` to the end of the sheet are
   returned.
+
+- first_column:
+
+  Integer or `NULL`. Column number of the first column to read in. If
+  `NULL` (default), uses default behavior of
+  [`openxlsx2::read_xlsx()`](https://janmarvin.github.io/openxlsx2/reference/wb_to_df.html).
+
+- final_column:
+
+  Integer or `NULL`. Column number of the last column to read in. If
+  `NULL` (default), uses default behavior of
+  [`openxlsx2::read_xlsx()`](https://janmarvin.github.io/openxlsx2/reference/wb_to_df.html).
 
 - sep:
 

@@ -45,3 +45,9 @@ install.packages(c('excelsior', 'xldiff'), repos = c('https://framverse.r-univer
 - [`row_finder_by_color()`](https://cbedwards-dfw.github.io/excelsior/reference/row_finder_by_color.md)
   : Find anchor cell based on fill color
 
+# Articles
+
+### All vignettes
+
+- [Getting Started with
+  Excelsior](https://cbedwards-dfw.github.io/excelsior/articles/excelsior.md):
