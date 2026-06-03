@@ -54,9 +54,9 @@ row_finder <- function(filepath,
     column = openxlsx2::col2int(column)
   }
 
-  raw <- readxl::read_excel(filepath,
+  raw <- openxlsx2::read_xlsx(filepath,
                     sheet = sheet,
                     col_names = FALSE,
-                    .name_repair = "unique_quiet")
+                    start_row = 1)
   grep(pattern, raw[[column]])[instance] + offset
 }
