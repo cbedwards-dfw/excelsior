@@ -1,4 +1,7 @@
 expand_cell_range <- function(range) {
+
+  validate_cell_range(range, n = 1)
+
   # Split on ":" to get the two corner addresses
   corners <- strsplit(range, ":")[[1]]
   if (length(corners) != 2) stop("Input must be a range in 'A1:B2' format.")

@@ -18,6 +18,9 @@
 #'
 #' @export
 as_numeric_smart <- function(vec){
+
+  validate_character(vec)
+
   result <- sapply(vec, function(x) {
     # Skip if empty or NA
     if(is.na(x) || x == "") return(x)

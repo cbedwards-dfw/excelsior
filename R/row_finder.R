@@ -35,8 +35,9 @@ row_finder <- function(filepath,
                        offset = 0){
 
   validate_character(filepath, n = 1)
-  validate_character(sheet, n = 1)
-  ## validating column
+  validate_excel_sheet(sheet, filepath, n = 1)
+
+    ## validating column
   if(!is.numeric(column) & !is.character(column)){
     cli::cli_abort("`column` must identify a single column using either column number (e.g., `3`), or the excel column identifier (e.g., `\"C\"`).")
   }

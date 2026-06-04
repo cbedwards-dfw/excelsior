@@ -31,6 +31,8 @@ row_finder_by_color <- function(filepath,
   } else {
     validate_excel_column(column)
   }
+  validate_integer(instance, n = 1)
+  validate_integer(offset, n = 1)
 
   ## validating color, then removing #
   color <- gsub("^[#]", "", color)

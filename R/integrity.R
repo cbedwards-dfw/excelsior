@@ -1,5 +1,8 @@
 
-validate_data_frame <- function(x, ..., arg = rlang::caller_arg(x), call = rlang::caller_env()) {
+validate_data_frame <- function(x, allow_null = FALSE, ..., arg = rlang::caller_arg(x), call = rlang::caller_env()) {
+
+  if(allow_null && is.null(x)){ return(invisible(NULL)) }
+
   # checks for data frame, stolen from the tidyr package
   if (!is.data.frame(x)) {
     cli::cli_abort("{.arg {arg}} must be a data frame, not {.obj_type_friendly {x}}.", ..., call = call)
@@ -7,7 +10,11 @@ validate_data_frame <- function(x, ..., arg = rlang::caller_arg(x), call = rlang
 }
 
 
-validate_numeric <- function(x, n = NULL, min = NULL, max = NULL, ..., arg = rlang::caller_arg(x), call = rlang::caller_env()) {
+validate_numeric <- function(x, n = NULL, min = NULL, max = NULL,
+                             allow_null = FALSE, ..., arg = rlang::caller_arg(x), call = rlang::caller_env()) {
+
+  if(allow_null && is.null(x)){ return(invisible(NULL)) }
+
   if (!is.numeric(x)) {
     cli::cli_abort("{.arg {arg}} must be a numeric, not {class(x)}.", ..., call = call)
   }
@@ -36,7 +43,11 @@ validate_numeric <- function(x, n = NULL, min = NULL, max = NULL, ..., arg = rla
   }
 }
 
-validate_character <- function(x, n = NULL, ..., arg = rlang::caller_arg(x), call = rlang::caller_env()) {
+validate_character <- function(x, n = NULL, allow_null = FALSE,
+                               ..., arg = rlang::caller_arg(x), call = rlang::caller_env()) {
+
+  if(allow_null && is.null(x)){ return(invisible(NULL)) }
+
   if (!is.character(x)) {
     cli::cli_abort("{.arg {arg}} must be a character, not {.obj_type_friendly {x}}.", ..., call = call)
   }
@@ -53,8 +64,13 @@ validate_flag <- function(x, ..., arg = rlang::caller_arg(x), call = rlang::call
   }
 }
 
-validate_integer <- function(x, n = NULL, ..., arg = rlang::caller_arg(x), call = rlang::caller_env()) {
+validate_integer <- function(x, n = NULL, allow_null = FALSE,
+                             ..., arg = rlang::caller_arg(x), call = rlang::caller_env()) {
+
+  if(allow_null && is.null(x)){ return(invisible(NULL)) }
+
   validate_numeric(x, n, arg = arg, call = call, ...)
+
   if (any(x %% 1 != 0)) {
     if (!is.null(n) && n > 1) {
       cli::cli_abort("{.arg {arg}} must contain only whole numbers.", ..., call = call)
@@ -64,13 +80,21 @@ validate_integer <- function(x, n = NULL, ..., arg = rlang::caller_arg(x), call 
   }
 }
 
-validate_wb <- function(x, ..., arg = rlang::caller_arg(x), call = rlang::caller_env()){
+validate_wb <- function(x, allow_null = FALSE, ...,
+                        arg = rlang::caller_arg(x), call = rlang::caller_env()){
+
+  if(allow_null && is.null(x)){ return(invisible(NULL)) }
+
   if (! ("wbWorkbook" %in% class(x) )) {
     cli::cli_abort("{.arg {x}} must be an openxlsx2 workbook(a `wbWorkbook` object), not {.obj_type_friendly {x}}", ..., call = call)
   }
 }
 
-validate_excel_column <- function(x, n = NULL, ..., arg = rlang::caller_arg(x), call = rlang::caller_env()){
+validate_excel_column <- function(x, n = NULL, allow_null = FALSE, ...,
+                                  arg = rlang::caller_arg(x), call = rlang::caller_env()){
+
+  if(allow_null && is.null(x)){ return(invisible(NULL)) }
+
   validate_character(x, n = n, arg = arg, call = call)
   possible_cols = tidyr::expand_grid(c("", LETTERS), c("",LETTERS), LETTERS) |>
     apply(MARGIN =1, FUN = function(x){paste(x, collapse = "")})
@@ -80,7 +104,11 @@ validate_excel_column <- function(x, n = NULL, ..., arg = rlang::caller_arg(x), 
   }
 }
 
-validate_hex_color <- function(x, n = NULL, ..., arg = rlang::caller_arg(x), call = rlang::caller_env()) {
+validate_hex_color <- function(x, n = NULL, allow_null = FALSE, ...,
+                               arg = rlang::caller_arg(x), call = rlang::caller_env()) {
+
+  if(allow_null && is.null(x)){ return(invisible(NULL)) }
+
   # Check if it's a character vector
   validate_character(x, n = n, arg = arg, call = call)
 
@@ -97,17 +125,25 @@ validate_hex_color <- function(x, n = NULL, ..., arg = rlang::caller_arg(x), cal
   }
 }
 
-validate_cell_address <- function(x, n = NULL, ..., arg = rlang::caller_arg(x), call = rlang::caller_env()) {
+validate_cell_address <- function(x, n = NULL, allow_null = FALSE, ...,
+                                  arg = rlang::caller_arg(x), call = rlang::caller_env()) {
+
+  if(allow_null && is.null(x)){ return(invisible(NULL)) }
+
   validate_character(x, n = n, arg = arg, call = call)
 
   pattern <- "^[A-Z]+[0-9]+$"
   if (!all(grepl(pattern, x))) {
-    cli::cli_abort("Elements of {.arg {arg}} must be valid Excel cell addresses (e.g., 'A1', 'B10', 'AA100').",
+    cli::cli_abort("Elements of {.arg {arg}} must be valid Excel cell addresses for a single cell (e.g., 'A1', 'B10', 'AA100').",
                    ..., call = call)
   }
 }
 
-validate_cell_range <- function(x, n = NULL, single_cell_allowed = TRUE, ..., arg = rlang::caller_arg(x), call = rlang::caller_env()) {
+validate_cell_range <- function(x, n = NULL, single_cell_allowed = TRUE, allow_null = FALSE,
+                                ..., arg = rlang::caller_arg(x), call = rlang::caller_env()) {
+
+  if(allow_null && is.null(x)){ return(invisible(NULL)) }
+
   validate_character(x, n = n, arg = arg, call = call)
 
   pattern <- "^[A-Z]+[0-9]+:[A-Z]+[0-9]+$"

@@ -80,6 +80,17 @@ read_excel_tiered_headers <- function(path,
                                       sep = "_",
                                       clean_names = TRUE){
 
+  validate_character(path, n = 1)
+  validate_excel_sheet(sheet, path, n = 1)
+  validate_integer(header_rows)
+  validate_integer(pseudo_merged_rows, allow_null = TRUE)
+  validate_integer(first_data_row, n = 1, allow_null = TRUE)
+  validate_integer(final_data_row, n = 1, allow_null = TRUE)
+  validate_integer(first_column, n = 1, allow_null = TRUE)
+  validate_integer(final_column, n = 1, allow_null = TRUE)
+  validate_character(sep, n = 1)
+  validate_flag(clean_names)
+
   if (is.null(first_data_row)){
     first_data_row <- max(header_rows) + 1
   }
