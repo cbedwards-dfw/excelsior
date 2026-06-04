@@ -48,6 +48,7 @@ copy_columns = function(wb,
   validate_character(from_file, n = 1)
   validate_excel_sheet(sheet, filepath = to_file, n = 1)
   validate_excel_sheet(sheet, filepath = from_file, n = 1)
+  validate_character(columns)
   validate_integer(row_start, n = 1)
   validate_integer(row_end, n = 1)
   validate_hex_color(color_scheme, n = 2)

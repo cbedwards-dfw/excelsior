@@ -32,11 +32,12 @@ copy_section <- function(wb,
                          numeric_flag = TRUE,
                          debug_mode = FALSE){
 
+  validate_wb(wb)
   validate_character(from_address, n = 1)
-  validate_character(to_address, n = 1)
+  validate_cell_range(to_address, n = 1)
   validate_character(sheet, n = 1)
-  if(!is.null(check_row_offset)){validate_integer(check_row_offset, n = 1)}
-  if(!is.null(check_col_offset)){validate_integer(check_col_offset, n = 1)}
+  validate_integer(check_row_offset, n = 1, allow_null = TRUE)
+  validate_integer(check_col_offset, n = 1, allow_null = TRUE)
   validate_flag(numeric_flag)
   validate_flag(debug_mode)
 

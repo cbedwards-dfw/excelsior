@@ -23,8 +23,9 @@ implant_df <- function(wb,
                        sheet,
                        numeric_flag = TRUE,
                        debug_mode = FALSE){ ## if TRUE, highlight the cells that were updated
+  validate_wb(wb)
   validate_data_frame(new_dat)
-  validate_character(cell_range, n = 1)
+  validate_cell_range(cell_range, n = 1)
   validate_character(sheet, n = 1)
   validate_flag(numeric_flag)
   validate_flag(debug_mode)
